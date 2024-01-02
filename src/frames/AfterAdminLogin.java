@@ -143,6 +143,11 @@ public class AfterAdminLogin extends javax.swing.JFrame {
 
         jButton2.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         jButton2.setText("Update");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         jButton3.setText("Reset");
@@ -337,6 +342,11 @@ public class AfterAdminLogin extends javax.swing.JFrame {
         });
 
         jButton6.setText("Update");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setText("Reset");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -717,7 +727,40 @@ public class AfterAdminLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // Display confirmation dialog
+        int choice = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to update?",
+                "Update Confirmation", JOptionPane.YES_NO_OPTION);
 
+        // Check user's choice
+        if (choice == JOptionPane.YES_OPTION) {
+            // Perform the update action
+            if (isCusValidated()) {
+
+                String cusID = this.cusID.getText();
+                String cusName = this.cusName.getText();
+                String cusMobile = this.cusMobile.getText();
+
+                try {
+//                    UPDATE your_table
+//                    SET column_to_update = 'new_value'
+//                    WHERE id = your_target_id;
+
+                    String query = "UPDATE customer SET cusName = ?,cusMobile = ? WHERE cusID = ?";
+                    PreparedStatement pst = con.prepareStatement(query);
+                    pst.setString(1, cusName);
+                    pst.setString(2, cusMobile);
+                    pst.setString(3, cusID);
+                    pst.execute();
+                    JOptionPane.showMessageDialog(this, "Successfully Updated");
+                    setCusTableData("SELECT * FROM customer");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Error : " + e.getMessage());
+                }
+            }
+        } else {
+            // Do nothing or handle the "No" case
+        }
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void btnItemAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemAddActionPerformed
@@ -882,7 +925,7 @@ public class AfterAdminLogin extends javax.swing.JFrame {
             int index = jTable3.getSelectedRow();
             cusID.setText(customerTBL.getValueAt(index, 0).toString());
             cusName.setText(customerTBL.getValueAt(index, 1).toString());
-            cusMobile.setText(customerTBL.getValueAt(index, 1).toString());
+            cusMobile.setText(customerTBL.getValueAt(index, 2).toString());
         }
     }//GEN-LAST:event_jTable3MouseClicked
 
@@ -891,20 +934,23 @@ public class AfterAdminLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if (jTable1.getSelectedRowCount() == 1) {
-            int index = jTable1.getSelectedRow();
-            try {
-                String query = "DELETE FROM item WHERE itemID=?";
-                PreparedStatement pst = con.prepareStatement(query);
-                pst.setString(1, itemTBL.getValueAt(index, 0).toString());
-                pst.execute();
-                JOptionPane.showMessageDialog(this, "Successfully Deleted");
-                setItemTableData("SELECT * FROM item");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error : " + e.getMessage());
-            }
+        if (JOptionPane.showConfirmDialog(null, "are you sure DELETE course details", "Conform", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            if (jTable1.getSelectedRowCount() == 1) {
+                int index = jTable1.getSelectedRow();
+                try {
+                    String query = "DELETE FROM item WHERE itemID=?";
+                    PreparedStatement pst = con.prepareStatement(query);
+                    pst.setString(1, itemTBL.getValueAt(index, 0).toString());
+                    pst.execute();
+                    JOptionPane.showMessageDialog(this, "Successfully Deleted");
+                    setItemTableData("SELECT * FROM item");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Error : " + e.getMessage());
+                }
 
+            }
         }
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -940,6 +986,53 @@ public class AfterAdminLogin extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // Display confirmation dialog
+        int choice = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to update?",
+                "Update Confirmation", JOptionPane.YES_NO_OPTION);
+
+        // Check user's choice
+        if (choice == JOptionPane.YES_OPTION) {
+            // Perform the update action
+            if (isEmpValidationforUpdate()) {
+
+                String empID = this.empID.getText();
+                String empName = this.empName.getText();
+                String empMobile = this.empMobile.getText();
+                String empEmail = this.empEmail.getText();
+                String empAddress = this.empAddress.getText();
+//                String empPassword = empPass.getName();
+                String empGender = (jRadioButton1.isSelected()) ? "Male" : "Female";
+
+                try {
+//                    UPDATE your_table
+//                    SET column_to_update = 'new_value'
+//                    WHERE id = your_target_id;
+
+                    String query = "UPDATE employee SET empName = ?,empMobile = ?, empEmail = ?, empAddress = ?, empGender = ? WHERE empID = ?";
+                    PreparedStatement pst = con.prepareStatement(query);
+                    pst.setString(1, empName);
+                    pst.setString(2, empMobile);
+                    pst.setString(3, empEmail);
+                    pst.setString(4, empAddress);
+                    pst.setString(5, empGender);
+                    pst.execute();
+                    JOptionPane.showMessageDialog(this, "Successfully Updated");
+                    setCusTableData("SELECT * FROM employee");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Error : " + e.getMessage());
+                }
+            }
+        } else {
+            // Do nothing or handle the "No" case
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
     private void clearCustom() {
         cusID.setText("");
         cusName.setText("");
@@ -1093,15 +1186,103 @@ public class AfterAdminLogin extends javax.swing.JFrame {
         return true;
     }
 
+//    private boolean isEmpValidated() {
+//        if (!Pattern.matches("[A-Z a-z]{1,300}", empName.getText())) {
+//            JOptionPane.showMessageDialog(this, "Invalid Employee Name Please Check");
+//            return false;
+//        }
+//        if (!Pattern.matches("[A-Z a-z]{1,300}", empPass.getText())) {
+//            JOptionPane.showMessageDialog(this, "Invalid Employee password Please Check");
+//            return false;
+//        }
+//        if (!Pattern.matches("[a-z0-9].{1,150}[@][a-z0-9]{1,30}.[a-z][1,18]", empEmail.getText())) {
+//            JOptionPane.showMessageDialog(this, "Invalid Employee Email Please Check");
+//            return false;
+//        }
+//        if (!Pattern.matches("[A-Z a-z 0-9 / ,]{1,300}", empAddress.getText())) {
+//            JOptionPane.showMessageDialog(this, "Invalid Employee Address Please Check");
+//            return false;
+//        }
+//        if (!Pattern.matches("[0-9]{10}", empMobile.getText())) {
+//            JOptionPane.showMessageDialog(this, "Invalid Employee Mobile Please Check");
+//            return false;
+//        }
+//
+//        return true;
+//    }
+//    private boolean isEmpValidated() {
+//    if (!Pattern.matches("[A-Za-z ]{1,300}", empName.getText())) {
+//        JOptionPane.showMessageDialog(this, "Invalid Employee Name. Please check.");
+//        return false;
+//    }
+//
+//    if (!Pattern.matches(".{1,300}", empPass.getText())) {
+//        JOptionPane.showMessageDialog(this, "Invalid Employee Password. Please check.");
+//        return false;
+//    }
+//
+//    // Improved email validation regex
+//    String emailRegex = "^[A-Za-z0-9_+&*-]+(?:\\.[A-Za-z0-9_+&*-]+)*@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,7}$";
+//    if (!Pattern.matches(emailRegex, empEmail.getText())) {
+//        JOptionPane.showMessageDialog(this, "Invalid Employee Email. Please check.");
+//        return false;
+//    }
+//
+//    if (!Pattern.matches("[A-Za-z0-9/ ,]{1,300}", empAddress.getText())) {
+//        JOptionPane.showMessageDialog(this, "Invalid Employee Address. Please check.");
+//        return false;
+//    }
+//
+//    if (!Pattern.matches("\\d{10}", empMobile.getText())) {
+//        JOptionPane.showMessageDialog(this, "Invalid Employee Mobile. Please check.");
+//        return false;
+//    }
+//
+//    return true;
+//}
     private boolean isEmpValidated() {
+        if (!Pattern.matches("[A-Za-z ]{1,300}", empName.getText())) {
+            JOptionPane.showMessageDialog(this, "Invalid Employee Name. Please check.");
+            return false;
+        }
+
+        if (!Pattern.matches(".{1,300}", empPass.getText())) {
+            JOptionPane.showMessageDialog(this, "Invalid Employee Password. Please check.");
+            return false;
+        }
+
+        if (!isValidEmail(empEmail.getText())) {
+            JOptionPane.showMessageDialog(this, "Invalid Employee Email. Please check.");
+            return false;
+        }
+
+        if (!Pattern.matches("[A-Za-z0-9/ ,]{1,300}", empAddress.getText())) {
+            JOptionPane.showMessageDialog(this, "Invalid Employee Address. Please check.");
+            return false;
+        }
+
+        if (!Pattern.matches("\\d{10}", empMobile.getText())) {
+            JOptionPane.showMessageDialog(this, "Invalid Employee Mobile. Please check.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isValidEmail(String email) {
+        // Simple email validation, adjust as needed
+        return email.matches("^[A-Za-z0-9_+&*-]+(?:\\.[A-Za-z0-9_+&*-]+)*@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,7}$");
+    }
+
+    private boolean isEmpValidationforUpdate() {
         if (!Pattern.matches("[A-Z a-z]{1,300}", empName.getText())) {
             JOptionPane.showMessageDialog(this, "Invalid Employee Name Please Check");
             return false;
         }
-        if (!Pattern.matches("[A-Z a-z]{1,300}", empPass.getText())) {
-            JOptionPane.showMessageDialog(this, "Invalid Employee password Please Check");
-            return false;
-        }
+//        if (!Pattern.matches("[A-Z a-z]{1,300}", empPass.getText())) {
+//            JOptionPane.showMessageDialog(this, "Invalid Employee password Please Check");
+//            return false;
+//        }
         if (!Pattern.matches("[a-z0-9].{1,150}[@][a-z0-9]{1,30}.[a-z][1,18]", empEmail.getText())) {
             JOptionPane.showMessageDialog(this, "Invalid Employee Email Please Check");
             return false;
