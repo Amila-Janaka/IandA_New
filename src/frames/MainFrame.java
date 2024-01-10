@@ -3,6 +3,9 @@ package frames;
 import classes.DBConnection;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.mysql.jdbc.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -10,10 +13,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class MainFrame extends javax.swing.JFrame {
 
     Connection con = new DBConnection().dbConn();
-    
+
     public MainFrame() {
         initComponents();
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -36,10 +39,10 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        empIDTextField = new javax.swing.JTextField();
+        empEmail = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         empLoginButton = new javax.swing.JButton();
-        empPasswordField = new javax.swing.JPasswordField();
+        empPass = new javax.swing.JPasswordField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -146,12 +149,17 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel7.setText("Employee Login");
 
         jLabel8.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jLabel8.setText("Emp ID");
+        jLabel8.setText("Emp Email");
 
         jLabel9.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel9.setText("Password");
 
         empLoginButton.setText("Login");
+        empLoginButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                empLoginButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -161,14 +169,14 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
-                    .addComponent(empIDTextField)
+                    .addComponent(empEmail)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9)
                             .addComponent(empLoginButton))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(empPasswordField))
+                    .addComponent(empPass))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -179,11 +187,11 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(empIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(empEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(empPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(empPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(empLoginButton)
                 .addContainerGap(27, Short.MAX_VALUE))
@@ -261,6 +269,38 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_userLoginButtonActionPerformed
 
+
+    private void empLoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empLoginButtonActionPerformed
+
+        String email = empEmail.getText();
+        String password = empPass.getText();
+        AfterAdminLogin adminObj = new AfterAdminLogin();
+        // Check login credentials in the database
+        if (isValidLogin(email, password)) {
+            // Successful login, navigate to the main application window
+            // For example: new MainApplicationFrame();
+            adminObj.show();
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid login credentials");
+        }
+    }//GEN-LAST:event_empLoginButtonActionPerformed
+
+    public static boolean isValidLogin(String email, String password) {
+        try (Connection con = new DBConnection().dbConn()) {
+            String query = "SELECT * FROM employee WHERE empEmail = ? AND empPassword = ?";
+            try (PreparedStatement pst = con.prepareStatement(query)) {
+                pst.setString(1, email);
+                pst.setString(2, password);
+                try (ResultSet rs = pst.executeQuery()) {
+                    return rs.next();
+                }
+            }
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
     public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(new FlatMacLightLaf());
@@ -274,9 +314,9 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField empIDTextField;
+    private javax.swing.JTextField empEmail;
     private javax.swing.JButton empLoginButton;
-    private javax.swing.JPasswordField empPasswordField;
+    private javax.swing.JPasswordField empPass;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

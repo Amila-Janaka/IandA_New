@@ -6,6 +6,7 @@ import classes.Employee;
 import classes.Item;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.mysql.jdbc.Connection;
+import java.awt.HeadlessException;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.PreparedStatement;
@@ -788,30 +789,28 @@ public class AfterAdminLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnItemAddActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        if (isEmpValidated()) {
 
-            String empName = this.empName.getText();
-            String empMobile = this.empMobile.getText();
-            String empEmail = this.empEmail.getText();
-            String empAddress = this.empAddress.getText();
-            String empPassword = empPass.getName();
-            String empGender = (jRadioButton1.isSelected()) ? "Male" : "Female";
+        String empName = this.empName.getText();
+        String empMobile = this.empMobile.getText();
+        String empEmail = this.empEmail.getText();
+        String empAddress = this.empAddress.getText();
+        String empPassword = empPass.getText();
+        String empGender = (jRadioButton1.isSelected()) ? "Male" : "Female";
 
-            try {
-                String query = "INSERT INTO employee VALUES(Null,?,?,?,?,?.?)";
-                PreparedStatement pst = con.prepareStatement(query);
-                pst.setString(1, empName);
-                pst.setString(2, empMobile);
-                pst.setString(3, empEmail);
-                pst.setString(4, empAddress);
-                pst.setString(5, empPassword);
-                pst.setString(6, empGender);
-                pst.execute();
-                JOptionPane.showMessageDialog(this, "Successfully Inserted");
-                setEmpTableData("SELECT * FROM employee");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error : " + e.getMessage());
-            }
+        try {
+            String query = "INSERT INTO employee VALUES(Null,?,?,?,?,?,?)";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, empName);
+            pst.setString(2, empMobile);
+            pst.setString(3, empEmail);
+            pst.setString(4, empAddress);
+            pst.setString(5, empPassword);
+            pst.setString(6, empGender);
+            pst.execute();
+            JOptionPane.showMessageDialog(this, "Successfully Inserted");
+            setEmpTableData("SELECT * FROM employee");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error : " + e.getMessage());
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -914,6 +913,7 @@ public class AfterAdminLogin extends javax.swing.JFrame {
     private void clearEmp() {
         empID.setText("");
         empName.setText("");
+        empPass.setText("");
         empEmail.setText("");
         empAddress.setText("");
         empMobile.setText("");
@@ -988,7 +988,45 @@ public class AfterAdminLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        // Display confirmation dialog
+        int choice = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to update?",
+                "Update Confirmation", JOptionPane.YES_NO_OPTION);
+
+        // Check user's choice
+        if (choice == JOptionPane.YES_OPTION) {
+            // Perform the update action
+            if (isItemValidated()) {
+
+                String iID = this.itemID.getText();
+                String iName = this.itemName.getText();
+                String sName = this.supName.getText();
+                String sAddress = this.supAddress.getText();
+                String sMobile = this.supMobile.getText();
+
+                try {
+//                    UPDATE your_table
+//                    SET column_to_update = 'new_value'
+//                    WHERE id = your_target_id;
+
+                    String query = "UPDATE item SET itemName = ?,supplierName = ?,supplierAddress = ?,supplierMobile = ? WHERE itemID  = ?";
+                    PreparedStatement pst = con.prepareStatement(query);
+
+                    pst.setString(1, iName);
+                    pst.setString(2, sName);
+                    pst.setString(3, sAddress);
+                    pst.setString(4, sMobile);
+                    pst.setString(5, iID);
+                    pst.execute();
+                    JOptionPane.showMessageDialog(this, "Successfully Updated");
+                    setItemTableData("SELECT * FROM item");
+                } catch (HeadlessException | SQLException e) {
+                    JOptionPane.showMessageDialog(this, "Error : " + e.getMessage());
+                }
+            }
+        } else {
+            // Do nothing or handle the "No" case
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -1000,34 +1038,32 @@ public class AfterAdminLogin extends javax.swing.JFrame {
         // Check user's choice
         if (choice == JOptionPane.YES_OPTION) {
             // Perform the update action
-            if (isEmpValidationforUpdate()) {
 
-                String empID = this.empID.getText();
-                String empName = this.empName.getText();
-                String empMobile = this.empMobile.getText();
-                String empEmail = this.empEmail.getText();
-                String empAddress = this.empAddress.getText();
+            String empID = this.empID.getText();
+            String empName = this.empName.getText();
+            String empMobile = this.empMobile.getText();
+            String empEmail = this.empEmail.getText();
+            String empAddress = this.empAddress.getText();
 //                String empPassword = empPass.getName();
-                String empGender = (jRadioButton1.isSelected()) ? "Male" : "Female";
+            String empGender = (jRadioButton1.isSelected()) ? "Male" : "Female";
 
-                try {
+            try {
 //                    UPDATE your_table
 //                    SET column_to_update = 'new_value'
 //                    WHERE id = your_target_id;
 
-                    String query = "UPDATE employee SET empName = ?,empMobile = ?, empEmail = ?, empAddress = ?, empGender = ? WHERE empID = ?";
-                    PreparedStatement pst = con.prepareStatement(query);
-                    pst.setString(1, empName);
-                    pst.setString(2, empMobile);
-                    pst.setString(3, empEmail);
-                    pst.setString(4, empAddress);
-                    pst.setString(5, empGender);
-                    pst.execute();
-                    JOptionPane.showMessageDialog(this, "Successfully Updated");
-                    setCusTableData("SELECT * FROM employee");
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(this, "Error : " + e.getMessage());
-                }
+                String query = "UPDATE employee SET empName = ?,empMobile = ?, empEmail = ?, empAddress = ?, empGender = ? WHERE empID = ?";
+                PreparedStatement pst = con.prepareStatement(query);
+                pst.setString(1, empName);
+                pst.setString(2, empMobile);
+                pst.setString(3, empEmail);
+                pst.setString(4, empAddress);
+                pst.setString(5, empGender);
+                pst.execute();
+                JOptionPane.showMessageDialog(this, "Successfully Updated");
+                setCusTableData("SELECT * FROM employee");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error : " + e.getMessage());
             }
         } else {
             // Do nothing or handle the "No" case
@@ -1240,65 +1276,63 @@ public class AfterAdminLogin extends javax.swing.JFrame {
 //
 //    return true;
 //}
-    private boolean isEmpValidated() {
-        if (!Pattern.matches("[A-Za-z ]{1,300}", empName.getText())) {
-            JOptionPane.showMessageDialog(this, "Invalid Employee Name. Please check.");
-            return false;
-        }
-
-        if (!Pattern.matches(".{1,300}", empPass.getText())) {
-            JOptionPane.showMessageDialog(this, "Invalid Employee Password. Please check.");
-            return false;
-        }
-
-        if (!isValidEmail(empEmail.getText())) {
-            JOptionPane.showMessageDialog(this, "Invalid Employee Email. Please check.");
-            return false;
-        }
-
-        if (!Pattern.matches("[A-Za-z0-9/ ,]{1,300}", empAddress.getText())) {
-            JOptionPane.showMessageDialog(this, "Invalid Employee Address. Please check.");
-            return false;
-        }
-
-        if (!Pattern.matches("\\d{10}", empMobile.getText())) {
-            JOptionPane.showMessageDialog(this, "Invalid Employee Mobile. Please check.");
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean isValidEmail(String email) {
-        // Simple email validation, adjust as needed
-        return email.matches("^[A-Za-z0-9_+&*-]+(?:\\.[A-Za-z0-9_+&*-]+)*@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,7}$");
-    }
-
-    private boolean isEmpValidationforUpdate() {
-        if (!Pattern.matches("[A-Z a-z]{1,300}", empName.getText())) {
-            JOptionPane.showMessageDialog(this, "Invalid Employee Name Please Check");
-            return false;
-        }
-//        if (!Pattern.matches("[A-Z a-z]{1,300}", empPass.getText())) {
-//            JOptionPane.showMessageDialog(this, "Invalid Employee password Please Check");
+//    private boolean isEmpValidated() {
+//        if (!Pattern.matches("[A-Za-z ]{1,300}", empName.getText())) {
+//            JOptionPane.showMessageDialog(this, "Invalid Employee Name. Please check.");
 //            return false;
 //        }
-        if (!Pattern.matches("[a-z0-9].{1,150}[@][a-z0-9]{1,30}.[a-z][1,18]", empEmail.getText())) {
-            JOptionPane.showMessageDialog(this, "Invalid Employee Email Please Check");
-            return false;
-        }
-        if (!Pattern.matches("[A-Z a-z 0-9 / ,]{1,300}", empAddress.getText())) {
-            JOptionPane.showMessageDialog(this, "Invalid Employee Address Please Check");
-            return false;
-        }
-        if (!Pattern.matches("[0-9]{10}", empMobile.getText())) {
-            JOptionPane.showMessageDialog(this, "Invalid Employee Mobile Please Check");
-            return false;
-        }
-
-        return true;
-    }
-
+//
+//        if (!Pattern.matches("^(?=.*[0-9]).{8,}$", empPass.getText())) {
+//            JOptionPane.showMessageDialog(this, "Invalid Employee Password. Please check.");
+//            return false;
+//        }
+//
+//        if (!Pattern.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\\\.[A-Z|a-z]{2,}$", empEmail.getText())) {
+//            JOptionPane.showMessageDialog(this, "Invalid Employee Email. Please check.");
+//            return false;
+//        }
+//
+//        if (!Pattern.matches("[A-Za-z0-9/ ,]{1,300}", empAddress.getText())) {
+//            JOptionPane.showMessageDialog(this, "Invalid Employee Address. Please check.");
+//            return false;
+//        }
+//
+//        if (!Pattern.matches("\\d{10}", empMobile.getText())) {
+//            JOptionPane.showMessageDialog(this, "Invalid Employee Mobile. Please check.");
+//            return false;
+//        }
+//
+//        return true;
+//    }
+//    private boolean isValidEmail(String email) {
+//        // Simple email validation, adjust as needed
+//        return email.matches("^[A-Za-z0-9_+&*-]+(?:\\.[A-Za-z0-9_+&*-]+)*@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,7}$");
+//    }
+//
+//    private boolean isEmpValidationforUpdate() {
+//        if (!Pattern.matches("[A-Z a-z]{1,300}", empName.getText())) {
+//            JOptionPane.showMessageDialog(this, "Invalid Employee Name Please Check");
+//            return false;
+//        }
+////        if (!Pattern.matches("[A-Z a-z]{1,300}", empPass.getText())) {
+////            JOptionPane.showMessageDialog(this, "Invalid Employee password Please Check");
+////            return false;
+////        }
+//        if (!Pattern.matches("[a-z0-9].{1,150}[@][a-z0-9]{1,30}.[a-z][1,18]", empEmail.getText())) {
+//            JOptionPane.showMessageDialog(this, "Invalid Employee Email Please Check");
+//            return false;
+//        }
+//        if (!Pattern.matches("[A-Z a-z 0-9 / ,]{1,300}", empAddress.getText())) {
+//            JOptionPane.showMessageDialog(this, "Invalid Employee Address Please Check");
+//            return false;
+//        }
+//        if (!Pattern.matches("[0-9]{10}", empMobile.getText())) {
+//            JOptionPane.showMessageDialog(this, "Invalid Employee Mobile Please Check");
+//            return false;
+//        }
+//
+//        return true;
+//    }
     public final void close() {
         this.addWindowListener(new WindowAdapter() {
             @Override

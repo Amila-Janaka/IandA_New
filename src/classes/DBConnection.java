@@ -13,7 +13,7 @@ public class DBConnection {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/i_and_a?autoReconnect=false&useSSL=false", "root", "");
-            JOptionPane.showMessageDialog(null, "Database Connected");
+//            JOptionPane.showMessageDialog(null, "Database Connected");
         } catch (HeadlessException | ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Database Not Connected. Check the server");
         }

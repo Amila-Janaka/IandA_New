@@ -277,7 +277,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel7" alignment="0" pref="316" max="32767" attributes="0"/>
-                              <Component id="empIDTextField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="empEmail" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jLabel8" min="-2" pref="130" max="-2" attributes="0"/>
@@ -286,7 +286,7 @@
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="empPasswordField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="empPass" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -300,11 +300,11 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="empIDTextField" min="-2" max="-2" attributes="0"/>
+                          <Component id="empEmail" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="empPasswordField" min="-2" max="-2" attributes="0"/>
+                          <Component id="empPass" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                           <Component id="empLoginButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace pref="27" max="32767" attributes="0"/>
@@ -329,10 +329,10 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="SansSerif" size="18" style="1"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Emp ID"/>
+                    <Property name="text" type="java.lang.String" value="Emp Email"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="empIDTextField">
+                <Component class="javax.swing.JTextField" name="empEmail">
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel9">
                   <Properties>
@@ -346,8 +346,11 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Login"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="empLoginButtonActionPerformed"/>
+                  </Events>
                 </Component>
-                <Component class="javax.swing.JPasswordField" name="empPasswordField">
+                <Component class="javax.swing.JPasswordField" name="empPass">
                 </Component>
               </SubComponents>
             </Container>
